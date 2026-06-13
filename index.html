@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +14,7 @@
 }
 
 body{
-    font-family: 'Trebuchet MS', sans-serif;
+    font-family:'Trebuchet MS',sans-serif;
     min-height:100vh;
     overflow:hidden;
     display:flex;
@@ -30,15 +31,17 @@ body{
 .card{
     width:min(90%,700px);
     text-align:center;
-    background:rgba(255,255,255,0.7);
+    background:rgba(255,255,255,0.75);
     backdrop-filter:blur(15px);
     padding:40px;
     border-radius:35px;
     box-shadow:0 15px 40px rgba(0,0,0,.08);
+    position:relative;
+    z-index:5;
 }
 
 .bear{
-    width:180px;
+    width:200px;
     border-radius:20px;
     margin-bottom:20px;
 }
@@ -69,6 +72,7 @@ button{
     cursor:pointer;
     font-size:20px;
     transition:.25s;
+    font-weight:bold;
 }
 
 #yesBtn{
@@ -85,10 +89,17 @@ button{
     color:#c97b84;
 }
 
+#score{
+    margin-top:20px;
+    color:#9d6b73;
+    font-size:1rem;
+}
+
 .floating{
     position:absolute;
     font-size:24px;
     animation:float 7s linear infinite;
+    pointer-events:none;
 }
 
 @keyframes float{
@@ -104,13 +115,32 @@ button{
         opacity:0;
     }
 }
+
+.toast{
+    position:fixed;
+    top:40px;
+    left:50%;
+    transform:translateX(-50%);
+    background:white;
+    color:#c97b84;
+    padding:12px 20px;
+    border-radius:999px;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+    animation:fadeOut 1.8s forwards;
+    z-index:999;
+}
+
+@keyframes fadeOut{
+    0%{opacity:1;}
+    80%{opacity:1;}
+    100%{opacity:0;}
+}
 </style>
 </head>
 <body>
 
 <div class="card" id="card">
 
-    <!-- Replace with your favorite teddy image -->
     <img
         class="bear"
         src="https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=600"
@@ -134,60 +164,169 @@ button{
         No 🥺
     </button>
 
+    <div id="score">
+        Teddy escapes: 0 🧸
+    </div>
+
 </div>
 
 <script>
-for(let i=0;i<30;i++){
+
+// Floating hearts
+for(let i=0;i<35;i++){
     const heart=document.createElement("div");
     heart.className="floating";
-    heart.innerHTML=["💗","💕","💖","🌸"][Math.floor(Math.random()*4)];
+    heart.innerHTML=["💗","💕","💖","🌸","❤️"][Math.floor(Math.random()*5)];
     heart.style.left=Math.random()*100+"vw";
-    heart.style.animationDuration=(4+Math.random()*5)+"s";
+    heart.style.animationDuration=(4+Math.random()*6)+"s";
+    heart.style.animationDelay=Math.random()*5+"s";
     document.body.appendChild(heart);
 }
 
-let count=0;
+let escapes=0;
+
+const messages=[
+    "Nice try 😏",
+    "Too slow 🧸",
+    "Almost got me 💕",
+    "The teddy is protecting this button 🐻",
+    "You'll have to be faster 🌸",
+    "Still not caught 😌",
+    "Mission failed 😆",
+    "That was close 👀",
+    "Not today 😝",
+    "Keep trying 💗"
+];
+
+function showToast(text){
+    const toast=document.createElement("div");
+    toast.className="toast";
+    toast.innerText=text;
+    document.body.appendChild(toast);
+
+    setTimeout(()=>{
+        toast.remove();
+    },1800);
+}
 
 function moveNo(){
-    count++;
+
     const btn=document.getElementById("noBtn");
 
-    if(count<10){
+    escapes++;
+
+    document.getElementById("score").innerHTML=
+        `Teddy escapes: ${escapes} 🧸`;
+
+    showToast(
+        messages[
+            Math.floor(Math.random()*messages.length)
+        ]
+    );
+
+    if(escapes===8){
+        btn.innerHTML="Still trying? 😳";
+    }
+
+    if(escapes===15){
+        btn.innerHTML="You're persistent 🥺";
+    }
+
+    if(escapes<20){
+
         btn.style.position="fixed";
-        btn.style.left=Math.random()*(window.innerWidth-120)+"px";
-        btn.style.top=Math.random()*(window.innerHeight-60)+"px";
+
+        btn.style.left=
+            Math.random()*(window.innerWidth-160)+"px";
+
+        btn.style.top=
+            Math.random()*(window.innerHeight-80)+"px";
+
+        btn.style.transform=
+            `scale(${Math.max(0.75,1-escapes*0.01)})`;
+
     }else{
-        btn.innerHTML="Fine... Yes ❤️";
-        btn.onclick=yesAnswer;
+
+        btn.innerHTML="Fine... you caught me 🥺";
         btn.onmouseover=null;
+        btn.onclick=noAnswer;
+
+        showToast(
+            "The teddy has officially given up 😭"
+        );
     }
 }
 
 function yesAnswer(){
+
     document.body.innerHTML=`
         <div style="
             text-align:center;
             color:#8b5e66;
+            padding:40px;
         ">
-            <img
-                src="https://www.pinterest.com/pin/1062145893390823779/"
-                style="width:220px;border-radius:20px">
+
+            <div style="font-size:80px;">
+                ❤️ 🧸 ❤️
+            </div>
 
             <h1 style="margin-top:20px;">
-                YAYYY ❤️
+                YAYYYY ❤️
             </h1>
 
             <h2>
                 Alice said YES 🌹
             </h2>
 
-            <p style="margin-top:15px;font-size:1.2rem;">
+            <p style="
+                margin-top:20px;
+                font-size:1.3rem;
+            ">
                 The teddy bears are celebrating today 🎀💕
             </p>
+
+            <div style="
+                font-size:50px;
+                margin-top:25px;
+            ">
+                🧸💖🧸💖🧸
+            </div>
+
         </div>
     `;
 }
+
+function noAnswer(){
+
+    document.body.innerHTML=`
+        <div style="
+            text-align:center;
+            color:#8b5e66;
+            padding:40px;
+        ">
+
+            <div style="font-size:80px;">
+                🧸🥺
+            </div>
+
+            <h1 style="margin-top:20px;">
+                Oh no...
+            </h1>
+
+            <p style="
+                margin-top:15px;
+                font-size:1.2rem;
+            ">
+                The teddy is a little disappointed,
+                but thanks for being honest ❤️
+            </p>
+
+        </div>
+    `;
+}
+
 </script>
 
 </body>
 </html>
+```
