@@ -1,46 +1,169 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>For Alice ❤️</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Pookie 💕</title>
+
 <style>
 body{
+    margin:0;
+    overflow:hidden;
+    font-family:'Comic Sans MS', cursive;
+    background:linear-gradient(135deg,#ffd6e7,#ffe8f3,#fff4fa);
     text-align:center;
-    font-family:Arial;
-    margin-top:100px;
 }
+
+/* Floating hearts */
+.heart{
+    position:absolute;
+    font-size:25px;
+    animation:float 6s linear infinite;
+    opacity:0.8;
+}
+
+@keyframes float{
+    from{
+        transform:translateY(100vh);
+    }
+    to{
+        transform:translateY(-120px);
+    }
+}
+
+.container{
+    margin-top:90px;
+    position:relative;
+    z-index:2;
+}
+
+h1{
+    color:#ff4d88;
+    font-size:3rem;
+    text-shadow:2px 2px white;
+}
+
+.subtitle{
+    font-size:1.3rem;
+    color:#cc6699;
+}
+
+.dolls{
+    font-size:60px;
+    margin:20px;
+}
+
 button{
-    padding:15px 30px;
-    margin:10px;
+    border:none;
+    padding:15px 35px;
+    font-size:22px;
+    border-radius:50px;
+    cursor:pointer;
+    transition:.3s;
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+}
+
+#yesBtn{
+    background:#ff6fa5;
+    color:white;
+}
+
+#yesBtn:hover{
+    transform:scale(1.1);
+}
+
+#noBtn{
+    background:white;
+    color:#ff6fa5;
+}
+
+.sparkle{
+    position:absolute;
     font-size:20px;
+    animation:spin 4s linear infinite;
+}
+
+@keyframes spin{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
 }
 </style>
 </head>
 <body>
 
-<h1>Alice, will you go on a date with me? ❤️</h1>
+<div class="container">
 
-<button onclick="yes()">Yes</button>
-<button id="noBtn" onmouseover="moveNo()">No</button>
+    <div class="dolls">
+        🧸 🎀 🐰 💖 🧸
+    </div>
+
+    <h1>Hey Alice, My Pookie 💕</h1>
+
+    <p class="subtitle">
+        These teddy bears have an important question...
+    </p>
+
+    <h2 style="color:#ff5c99;">
+        Will you go on a date with me? 🌸💗
+    </h2>
+
+    <button id="yesBtn" onclick="yes()">YES!!! 💖</button>
+    <button id="noBtn" onmouseover="moveNo()">No 🥺</button>
+
+</div>
 
 <script>
 let count = 0;
 
+// Floating hearts
+for(let i=0;i<30;i++){
+    let heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = ["💖","💕","💗","💝","🌸"][Math.floor(Math.random()*5)];
+    heart.style.left = Math.random()*100 + "vw";
+    heart.style.animationDuration = (4 + Math.random()*5) + "s";
+    heart.style.fontSize = (20 + Math.random()*30) + "px";
+    document.body.appendChild(heart);
+}
+
 function yes(){
-    document.body.innerHTML =
-    "<h1>Yay! 🎉 Can't wait, Alice ❤️</h1>";
+    document.body.innerHTML = `
+    <div style="margin-top:120px;">
+        <div style="font-size:90px;">🧸🎀🐰💖</div>
+
+        <h1 style="color:#ff4d88;font-size:4rem;">
+            YAYYYYY!!! 🎉💕
+        </h1>
+
+        <h2 style="color:#ff66a3;">
+            Alice said YES!! 💗
+        </h2>
+
+        <p style="font-size:1.5rem;color:#cc6699;">
+            The teddy bears are celebrating! 🧸✨
+        </p>
+
+        <div style="font-size:70px;">
+            🎀 💕 🌸 🧸 🎉 💖
+        </div>
+    </div>
+    `;
 }
 
 function moveNo(){
     count++;
     const btn = document.getElementById("noBtn");
 
-    if(count < 8){
+    if(count < 10){
         btn.style.position = "absolute";
-        btn.style.left = Math.random() * window.innerWidth * 0.8 + "px";
-        btn.style.top = Math.random() * window.innerHeight * 0.8 + "px";
-    } else {
-        btn.innerHTML = "Yes";
+        btn.style.left =
+            Math.random() * (window.innerWidth - 100) + "px";
+        btn.style.top =
+            Math.random() * (window.innerHeight - 50) + "px";
+    }else{
+        btn.innerHTML = "Okay Fine... YES 💖";
         btn.onclick = yes;
+        btn.onmouseover = null;
     }
 }
 </script>
