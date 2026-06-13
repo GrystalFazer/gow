@@ -38,7 +38,6 @@ body{
     margin-bottom:20px;
     box-shadow:0 8px 20px rgba(0,0,0,.08);
     transition:0.25s;
-    opacity:1;
 }
 
 h1{
@@ -99,7 +98,7 @@ button:hover{
 
     <img id="kittyImg"
         class="kitty"
-        src="https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie.jpg"
+        src="https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie%20🐾💖.jpg"
         alt="Kitty">
 
     <h1>Alice ❤️</h1>
@@ -120,15 +119,17 @@ button:hover{
 
 <script>
 
-/* ---------------- IMAGES ---------------- */
+/* ---------------- IMAGES (6 STEP NO GAME + YES FINAL) ---------------- */
 const images = [
-    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie%20%F0%9F%90%BE%F0%9F%92%96.jpg",
-    "https://raw.githubusercontent.com/GrystalFazer/gow/main/kittyrose.jpg",
-    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Coquette%20Kitty%20%F0%9F%8E%80.jpg",
-    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Heart%20Meme%20Funny.jpg"
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie%20🐾💖.jpg", // 0 start
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/kittyrose.jpg",                     // 1
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Coquette%20Kitty%20🎀.jpg",        // 2
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/kitty2.jpg",                       // 3 (add if you have)
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/kitty3.jpg",                       // 4 (add if you have)
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Heart%20Meme%20Funny.jpg"          // 5 final YES
 ];
 
-/* PRELOAD FIX (IMPORTANT) */
+/* preload */
 images.forEach(src=>{
     const img = new Image();
     img.src = src;
@@ -137,7 +138,7 @@ images.forEach(src=>{
 let noCount = 0;
 const kitty = document.getElementById("kittyImg");
 
-/* cute messages restored */
+/* extended messages */
 const messages = [
     "hehe 😸",
     "not so fast 💕",
@@ -146,7 +147,9 @@ const messages = [
     "try again 😳",
     "so close 🥺",
     "you can't catch me 🎀",
-    "nice try 😏"
+    "still nope 😼",
+    "getting closer... 👀",
+    "okay you're persistent 🥺"
 ];
 
 /* toast */
@@ -159,38 +162,38 @@ function showToast(text){
     setTimeout(()=>t.remove(),1200);
 }
 
-/* NO CLICK GAME */
+/* NO GAME (6+ TRIES) */
 function noClick(){
 
     noCount++;
 
-    // image cycle (first 3)
-    let idx = Math.min(noCount, 2);
+    // image progression up to 6 states
+    let idx = Math.min(noCount, 5);
     kitty.src = images[idx];
 
     // message
     showToast(messages[Math.floor(Math.random()*messages.length)]);
 
-    // move button
     const btn = document.getElementById("noBtn");
 
+    // always move for first 6+ clicks
     btn.style.position = "fixed";
     btn.style.left = Math.random() * (window.innerWidth - 120) + "px";
     btn.style.top = Math.random() * (window.innerHeight - 60) + "px";
 
-    btn.style.transform = "scale(0.95)";
-    setTimeout(()=>btn.style.transform="scale(1)",150);
+    // slight shrink effect over time
+    btn.style.transform = `scale(${Math.max(0.8,1-noCount*0.03)})`;
 }
 
 /* YES */
 function yesAnswer(){
 
-    kitty.src = images[3];
+    kitty.src = images[5];
 
     document.body.innerHTML = `
         <div style="text-align:center;color:#8b5e66;padding:40px;">
 
-            <img src="${images[3]}"
+            <img src="${images[5]}"
                 style="width:260px;border-radius:20px;">
 
             <h1 style="margin-top:20px;">YAYYYY ❤️</h1>
