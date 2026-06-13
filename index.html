@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>For Alice ❤️</title>
+<style>
+body{
+    text-align:center;
+    font-family:Arial;
+    margin-top:100px;
+}
+button{
+    padding:15px 30px;
+    margin:10px;
+    font-size:20px;
+}
+</style>
+</head>
+<body>
+
+<h1>Alice, will you go on a date with me? ❤️</h1>
+
+<button onclick="yes()">Yes</button>
+<button id="noBtn" onmouseover="moveNo()">No</button>
+
+<script>
+let count = 0;
+
+function yes(){
+    document.body.innerHTML =
+    "<h1>Yay! 🎉 Can't wait, Alice ❤️</h1>";
+}
+
+function moveNo(){
+    count++;
+    const btn = document.getElementById("noBtn");
+
+    if(count < 8){
+        btn.style.position = "absolute";
+        btn.style.left = Math.random() * window.innerWidth * 0.8 + "px";
+        btn.style.top = Math.random() * window.innerHeight * 0.8 + "px";
+    } else {
+        btn.innerHTML = "Yes";
+        btn.onclick = yes;
+    }
+}
+</script>
+
+</body>
+</html>
