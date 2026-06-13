@@ -66,14 +66,12 @@ button{
 #yesBtn{
     background:#e5989b;
     color:white;
-    position:relative;
-    z-index:2;
 }
 
 #noBtn{
     background:white;
     color:#c97b84;
-    position:absolute;
+    position:fixed;
     z-index:999;
 }
 
@@ -122,7 +120,7 @@ button:hover{
         class="kitty"
         src="https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie.jpg">
 
-    <h1>Aliceeyyyyyyyy ❤️</h1>
+    <h1>Aliceeyyyyyyyyyyyyyy ❤️</h1>
 
     <div class="question">
         Will you go on a date with me? 🌹
@@ -133,12 +131,13 @@ button:hover{
     </div>
 
     <button id="yesBtn" onclick="yesAnswer()">Yes ❤️</button>
-    <button id="noBtn" onmouseover="noClick()">No 🥺</button>
+    <button id="noBtn" onclick="noClick()">No 🥺</button>
 
 </div>
 
 <script>
 
+/* IMAGES */
 const images = [
     "https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie.jpg", // 0 start
     "https://raw.githubusercontent.com/GrystalFazer/gow/main/kittyrose.jpg",                     // 1
@@ -160,14 +159,15 @@ const loveFill=document.getElementById("loveFill");
 
 let noCount=0;
 
+/* messages */
 const messages=[
 "hehe 😸",
 "you missed me 💕",
-"almost caught me 🌸",
+"almost! 🌸",
 "nope 🐾",
 "try harder 😳",
-"so close 🥺",
-"still running 🎀"
+"still running 🎀",
+"catch me if you can 😼"
 ];
 
 function showToast(text){
@@ -178,41 +178,43 @@ function showToast(text){
     setTimeout(()=>t.remove(),1200);
 }
 
+/* SAFE MOVE (never outside screen) */
 function moveButton(){
 
     const padding = 20;
 
-    const btnRect = noBtn.getBoundingClientRect();
+    const rect = noBtn.getBoundingClientRect();
 
-    const maxX = window.innerWidth - btnRect.width - padding;
-    const maxY = window.innerHeight - btnRect.height - padding;
+    const maxX = window.innerWidth - rect.width - padding;
+    const maxY = window.innerHeight - rect.height - padding;
 
     const x = padding + Math.random() * Math.max(50, maxX);
     const y = padding + Math.random() * Math.max(50, maxY);
 
-    noBtn.style.position = "fixed";
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
 }
 
+/* NO CLICK GAME */
 function noClick(){
 
     noCount++;
 
-    kitty.src=images[Math.min(noCount,4)];
+    kitty.src = images[Math.min(noCount,4)];
 
     showToast(messages[Math.floor(Math.random()*messages.length)]);
 
     moveButton();
 
-    loveFill.style.width=Math.min(noCount*10,100)+"%";
+    loveFill.style.width = Math.min(noCount*12,100) + "%";
 
-    noBtn.innerText = noCount>5 ? "PLEASE 🥺" : "No 🥺";
+    noBtn.innerText = noCount > 5 ? "PLEASE 🥺" : "No 🥺";
 }
 
+/* YES */
 function yesAnswer(){
 
-    kitty.src=images[5];
+    kitty.src = images[5];
 
     document.body.innerHTML=`
     <div style="text-align:center;color:#8b5e66;padding:40px;">
@@ -222,7 +224,9 @@ function yesAnswer(){
         <p style="margin-top:20px;font-size:1.3rem;">
             The kitty is very happy 🐾💕
         </p>
-        <div style="font-size:50px;margin-top:25px;">😸💖🐾💖😻</div>
+        <div style="font-size:50px;margin-top:25px;">
+            😸💖🐾💖😻
+        </div>
     </div>`;
 }
 
