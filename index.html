@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,10 +40,11 @@ body{
     z-index:5;
 }
 
-.bear{
-    width:200px;
+.kitty{
+    width:220px;
     border-radius:20px;
     margin-bottom:20px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
 }
 
 h1{
@@ -54,6 +56,7 @@ h1{
     margin-top:10px;
     color:#9d6b73;
     font-size:1.1rem;
+    line-height:1.6;
 }
 
 .question{
@@ -138,17 +141,18 @@ button{
 </head>
 <body>
 
-<div class="card" id="card">
+<div class="card">
 
+    <!-- Replace with your kitty image -->
     <img
-        class="bear"
-        src="https://github.com/GrystalFazer/gow/blob/main/Tiny%20Confused%20Cutie%20%F0%9F%90%BE%F0%9F%92%96.jpg"
-        alt="Teddy Bear">
+        class="kitty"
+        src="https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie%20%F0%9F%90%BE%F0%9F%92%96.jpg"
+        alt="Kitty">
 
     <h1>Alice ❤️</h1>
 
     <p class="subtitle">
-        This little teddy has been carrying an important question...
+        This tiny kitty has been carrying a very important question...
     </p>
 
     <div class="question">
@@ -164,7 +168,7 @@ button{
     </button>
 
     <div id="score">
-        Teddy escapes: 0 🧸
+        Kitty dodges: 0 🐾
     </div>
 
 </div>
@@ -172,7 +176,7 @@ button{
 <script>
 
 // Floating hearts
-for(let i=0;i<35;i++){
+for(let i=0;i<40;i++){
     const heart=document.createElement("div");
     heart.className="floating";
     heart.innerHTML=["💗","💕","💖","🌸","❤️"][Math.floor(Math.random()*5)];
@@ -182,25 +186,27 @@ for(let i=0;i<35;i++){
     document.body.appendChild(heart);
 }
 
-let escapes=0;
+let dodges=0;
 
 const messages=[
-    "Nice try 😏",
-    "Too slow 🧸",
-    "Almost got me 💕",
-    "The teddy is protecting this button 🐻",
-    "You'll have to be faster 🌸",
-    "Still not caught 😌",
-    "Mission failed 😆",
-    "That was close 👀",
-    "Not today 😝",
-    "Keep trying 💗"
+    "hehe 😸",
+    "not so fast 💕",
+    "almost! 🌸",
+    "the kitty says no touching 🐾",
+    "you missed 😳",
+    "try again 💖",
+    "so close! 🥺",
+    "catch me if you can 🎀",
+    "that was a good attempt 😌",
+    "the kitty believes in you ✨"
 ];
 
 function showToast(text){
+
     const toast=document.createElement("div");
     toast.className="toast";
     toast.innerText=text;
+
     document.body.appendChild(toast);
 
     setTimeout(()=>{
@@ -212,10 +218,10 @@ function moveNo(){
 
     const btn=document.getElementById("noBtn");
 
-    escapes++;
+    dodges++;
 
-    document.getElementById("score").innerHTML=
-        `Teddy escapes: ${escapes} 🧸`;
+    document.getElementById("score").innerHTML =
+        `Kitty dodges: ${dodges} 🐾`;
 
     showToast(
         messages[
@@ -223,35 +229,50 @@ function moveNo(){
         ]
     );
 
-    if(escapes===8){
+    if(dodges===8){
         btn.innerHTML="Still trying? 😳";
     }
 
-    if(escapes===15){
+    if(dodges===15){
         btn.innerHTML="You're persistent 🥺";
     }
 
-    if(escapes<20){
+    if(dodges < 20){
 
         btn.style.position="fixed";
 
-        btn.style.left=
-            Math.random()*(window.innerWidth-160)+"px";
+        btn.style.left =
+            Math.random()*(window.innerWidth-180)+"px";
 
-        btn.style.top=
+        btn.style.top =
             Math.random()*(window.innerHeight-80)+"px";
 
-        btn.style.transform=
-            `scale(${Math.max(0.75,1-escapes*0.01)})`;
+        btn.style.transform =
+            `scale(${Math.max(0.75,1-dodges*0.01)})`;
 
     }else{
 
-        btn.innerHTML="Fine... you caught me 🥺";
+        btn.style.position="static";
+        btn.style.transform="scale(1.05)";
+        btn.style.background="#ffd6df";
+
+        btn.innerHTML="Pretty please? 🥺💕";
+
         btn.onmouseover=null;
-        btn.onclick=noAnswer;
+
+        btn.onclick=function(){
+
+            showToast(
+                "The kitty is asking very nicely... 🥺💖"
+            );
+
+            setTimeout(()=>{
+                yesAnswer();
+            },1000);
+        };
 
         showToast(
-            "The teddy has officially given up 😭"
+            "The kitty has one final request... 💕"
         );
     }
 }
@@ -259,68 +280,45 @@ function moveNo(){
 function yesAnswer(){
 
     document.body.innerHTML=`
-        <div style="
-            text-align:center;
-            color:#8b5e66;
-            padding:40px;
+
+    <div style="
+        text-align:center;
+        color:#8b5e66;
+        padding:40px;
+    ">
+
+        <img
+            src="https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie%20%F0%9F%90%BE%F0%9F%92%96.jpg"
+            style="
+                width:260px;
+                border-radius:20px;
+                box-shadow:0 8px 20px rgba(0,0,0,.08);
+            "
+        >
+
+        <h1 style="margin-top:20px;">
+            YAYYYY ❤️
+        </h1>
+
+        <h2>
+            Alice said YES 🌹
+        </h2>
+
+        <p style="
+            margin-top:20px;
+            font-size:1.3rem;
         ">
+            The kitty is absolutely delighted 🐾💕
+        </p>
 
-            <div style="font-size:80px;">
-                ❤️ 🧸 ❤️
-            </div>
-
-            <h1 style="margin-top:20px;">
-                YAYYYY ❤️
-            </h1>
-
-            <h2>
-                Alice said YES 🌹
-            </h2>
-
-            <p style="
-                margin-top:20px;
-                font-size:1.3rem;
-            ">
-                The teddy bears are celebrating today 🎀💕
-            </p>
-
-            <div style="
-                font-size:50px;
-                margin-top:25px;
-            ">
-                🧸💖🧸💖🧸
-            </div>
-
-        </div>
-    `;
-}
-
-function noAnswer(){
-
-    document.body.innerHTML=`
         <div style="
-            text-align:center;
-            color:#8b5e66;
-            padding:40px;
+            font-size:50px;
+            margin-top:25px;
         ">
-
-            <div style="font-size:80px;">
-                🧸🥺
-            </div>
-
-            <h1 style="margin-top:20px;">
-                Oh no...
-            </h1>
-
-            <p style="
-                margin-top:15px;
-                font-size:1.2rem;
-            ">
-                The teddy is a little disappointed,
-                but thanks for being honest ❤️
-            </p>
-
+            😸💖🐾💖😻
         </div>
+
+    </div>
     `;
 }
 
