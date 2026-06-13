@@ -19,12 +19,7 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    background:linear-gradient(
-        135deg,
-        #f8d7da,
-        #fdecef,
-        #fff8f8
-    );
+    background:linear-gradient(135deg,#f8d7da,#fdecef,#fff8f8);
 }
 
 .card{
@@ -35,8 +30,6 @@ body{
     padding:40px;
     border-radius:35px;
     box-shadow:0 15px 40px rgba(0,0,0,.08);
-    position:relative;
-    z-index:5;
 }
 
 .kitty{
@@ -49,13 +42,6 @@ body{
 h1{
     color:#c97b84;
     font-size:3rem;
-}
-
-.subtitle{
-    margin-top:10px;
-    color:#9d6b73;
-    font-size:1.1rem;
-    line-height:1.6;
 }
 
 .question{
@@ -72,8 +58,8 @@ button{
     margin:10px;
     cursor:pointer;
     font-size:20px;
-    transition:.25s;
     font-weight:bold;
+    transition:.25s;
 }
 
 #yesBtn{
@@ -81,19 +67,13 @@ button{
     color:white;
 }
 
-#yesBtn:hover{
-    transform:scale(1.08);
-}
-
 #noBtn{
     background:white;
     color:#c97b84;
 }
 
-#score{
-    margin-top:20px;
-    color:#9d6b73;
-    font-size:1rem;
+button:hover{
+    transform:scale(1.05);
 }
 
 .floating{
@@ -104,37 +84,9 @@ button{
 }
 
 @keyframes float{
-    from{
-        transform:translateY(100vh);
-        opacity:0;
-    }
-    20%{
-        opacity:1;
-    }
-    to{
-        transform:translateY(-120px);
-        opacity:0;
-    }
-}
-
-.toast{
-    position:fixed;
-    top:40px;
-    left:50%;
-    transform:translateX(-50%);
-    background:white;
-    color:#c97b84;
-    padding:12px 20px;
-    border-radius:999px;
-    box-shadow:0 5px 15px rgba(0,0,0,.1);
-    animation:fadeOut 1.8s forwards;
-    z-index:999;
-}
-
-@keyframes fadeOut{
-    0%{opacity:1;}
-    80%{opacity:1;}
-    100%{opacity:0;}
+    from{transform:translateY(100vh);opacity:0;}
+    20%{opacity:1;}
+    to{transform:translateY(-120px);opacity:0;}
 }
 </style>
 </head>
@@ -142,17 +94,13 @@ button{
 
 <div class="card">
 
-    <!-- Replace with your kitty image -->
-    <img
+    <!-- IMAGE CHANGES HERE -->
+    <img id="kittyImg"
         class="kitty"
-        src="https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie%20%F0%9F%90%BE%F0%9F%92%96.jpg"
+        src="IMG1.jpg"
         alt="Kitty">
 
     <h1>Alice ❤️</h1>
-
-    <p class="subtitle">
-        This tiny kitty has been carrying a very important question...
-    </p>
 
     <div class="question">
         Will you go on a date with me? 🌹
@@ -162,162 +110,77 @@ button{
         Yes ❤️
     </button>
 
-    <button id="noBtn" onmouseover="moveNo()">
+    <button id="noBtn" onclick="noClick()">
         No 🥺
     </button>
-
-    <div id="score">
-        Kitty dodges: 0 🐾
-    </div>
 
 </div>
 
 <script>
 
-// Floating hearts
-for(let i=0;i<40;i++){
-    const heart=document.createElement("div");
-    heart.className="floating";
-    heart.innerHTML=["💗","💕","💖","🌸","❤️"][Math.floor(Math.random()*5)];
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.animationDuration=(4+Math.random()*6)+"s";
-    heart.style.animationDelay=Math.random()*5+"s";
-    document.body.appendChild(heart);
-}
-
-let dodges=0;
-
-const messages=[
-    "hehe 😸",
-    "not so fast 💕",
-    "almost! 🌸",
-    "the kitty says no touching 🐾",
-    "you missed 😳",
-    "try again 💖",
-    "so close! 🥺",
-    "catch me if you can 🎀",
-    "that was a good attempt 😌",
-    "the kitty believes in you ✨"
+// 🔁 YOUR 4 IMAGES (REPLACE THESE)
+const images = [
+    "https://github.com/GrystalFazer/gow/blob/main/Tiny%20Confused%20Cutie%20%F0%9F%90%BE%F0%9F%92%96.jpg", // default
+    "https://github.com/GrystalFazer/gow/blob/main/kittyrose.jpg", // no click 1
+    "https://github.com/GrystalFazer/gow/blob/main/Coquette%20Kitty%20%F0%9F%8E%80.jpg", // no click 2
+    "https://github.com/GrystalFazer/gow/blob/main/Heart%20Meme%20Funny.jpg"  // yes final
 ];
 
-function showToast(text){
+let noCount = 0;
 
-    const toast=document.createElement("div");
-    toast.className="toast";
-    toast.innerText=text;
+const kitty = document.getElementById("kittyImg");
 
-    document.body.appendChild(toast);
-
-    setTimeout(()=>{
-        toast.remove();
-    },1800);
+// floating hearts
+for(let i=0;i<30;i++){
+    const h=document.createElement("div");
+    h.className="floating";
+    h.innerHTML=["💗","💕","💖","🌸","❤️"][Math.floor(Math.random()*5)];
+    h.style.left=Math.random()*100+"vw";
+    h.style.animationDuration=(4+Math.random()*6)+"s";
+    document.body.appendChild(h);
 }
 
-function moveNo(){
+function noClick(){
 
-    const btn=document.getElementById("noBtn");
+    noCount++;
 
-    dodges++;
+    // cycle only first 3 images
+    let idx = noCount % 3;
+    kitty.src = images[idx];
 
-    document.getElementById("score").innerHTML =
-        `Kitty dodges: ${dodges} 🐾`;
+    // small teasing shake
+    kitty.style.transform = "scale(0.95)";
+    setTimeout(()=>kitty.style.transform="scale(1)",200);
 
-    showToast(
-        messages[
-            Math.floor(Math.random()*messages.length)
-        ]
-    );
-
-    if(dodges===8){
-        btn.innerHTML="Still trying? 😳";
-    }
-
-    if(dodges===15){
-        btn.innerHTML="You're persistent 🥺";
-    }
-
-    if(dodges < 20){
-
-        btn.style.position="fixed";
-
-        btn.style.left =
-            Math.random()*(window.innerWidth-180)+"px";
-
-        btn.style.top =
-            Math.random()*(window.innerHeight-80)+"px";
-
-        btn.style.transform =
-            `scale(${Math.max(0.75,1-dodges*0.01)})`;
-
-    }else{
-
-        btn.style.position="static";
-        btn.style.transform="scale(1.05)";
-        btn.style.background="#ffd6df";
-
-        btn.innerHTML="Pretty please? 🥺💕";
-
-        btn.onmouseover=null;
-
-        btn.onclick=function(){
-
-            showToast(
-                "The kitty is asking very nicely... 🥺💖"
-            );
-
-            setTimeout(()=>{
-                yesAnswer();
-            },1000);
-        };
-
-        showToast(
-            "The kitty has one final request... 💕"
-        );
-    }
 }
 
 function yesAnswer(){
 
-    document.body.innerHTML=`
+    kitty.src = images[3]; // 4th image
 
-    <div style="
-        text-align:center;
-        color:#8b5e66;
-        padding:40px;
-    ">
-
-        <img
-            src="https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie%20%F0%9F%90%BE%F0%9F%92%96.jpg"
-            style="
-                width:260px;
-                border-radius:20px;
-                box-shadow:0 8px 20px rgba(0,0,0,.08);
-            "
-        >
-
-        <h1 style="margin-top:20px;">
-            YAYYYY ❤️
-        </h1>
-
-        <h2>
-            Alice said YES 🌹
-        </h2>
-
-        <p style="
-            margin-top:20px;
-            font-size:1.3rem;
-        ">
-            The kitty is absolutely delighted 🐾💕
-        </p>
-
+    document.body.innerHTML = `
         <div style="
-            font-size:50px;
-            margin-top:25px;
+            text-align:center;
+            color:#8b5e66;
+            padding:40px;
         ">
-            😸💖🐾💖😻
-        </div>
 
-    </div>
+            <img src="${images[3]}"
+                 style="width:260px;border-radius:20px;box-shadow:0 8px 20px rgba(0,0,0,.1);">
+
+            <h1 style="margin-top:20px;">YAYYYY ❤️</h1>
+
+            <h2>Alice said YES 🌹</h2>
+
+            <p style="margin-top:20px;font-size:1.3rem;">
+                The kitty is very happy 🐾💕
+            </p>
+
+            <div style="font-size:50px;margin-top:25px;">
+                😸💖🐾💖😻
+            </div>
+
+        </div>
     `;
 }
 
