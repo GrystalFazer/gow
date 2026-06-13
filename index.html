@@ -30,6 +30,7 @@ body{
     padding:40px;
     border-radius:35px;
     box-shadow:0 15px 40px rgba(0,0,0,.08);
+    position:relative;
 }
 
 .kitty{
@@ -71,6 +72,8 @@ button{
 #noBtn{
     background:white;
     color:#c97b84;
+    position:relative;
+    z-index:999;
 }
 
 button:hover{
@@ -98,7 +101,7 @@ button:hover{
 
     <img id="kittyImg"
         class="kitty"
-        src="https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie%20🐾💖.jpg"
+        src="https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie.jpg"
         alt="Kitty">
 
     <h1>Alice ❤️</h1>
@@ -119,14 +122,14 @@ button:hover{
 
 <script>
 
-/* ---------------- IMAGES (6 STEP NO GAME + YES FINAL) ---------------- */
+/* IMAGES */
 const images = [
-    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie.jpg", // 0 start
-    "https://raw.githubusercontent.com/GrystalFazer/gow/main/kittyrose.jpg",                     // 1
-    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Coquette%20Kitty.jpg",        // 2
-    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie.jpg",                       // 3 (add if you have)
-    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Coquette%20Kitty.jpg",                       // 4 (add if you have)
-    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Heart%20Meme%20Funny.jpg"          // 5 final YES
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie.jpg",
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/kittyrose.jpg",
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Coquette%20Kitty.jpg",
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie.jpg",
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Coquette%20Kitty.jpg",
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Heart%20Meme%20Funny.jpg"
 ];
 
 /* preload */
@@ -138,7 +141,6 @@ images.forEach(src=>{
 let noCount = 0;
 const kitty = document.getElementById("kittyImg");
 
-/* extended messages */
 const messages = [
     "hehe 😸",
     "not so fast 💕",
@@ -162,12 +164,12 @@ function showToast(text){
     setTimeout(()=>t.remove(),1200);
 }
 
-/* NO GAME (6+ TRIES) */
+/* FIXED NO GAME */
 function noClick(){
 
     noCount++;
 
-    // image progression up to 6 states
+    // image cycle (0–5 max)
     let idx = Math.min(noCount, 5);
     kitty.src = images[idx];
 
@@ -175,13 +177,18 @@ function noClick(){
     showToast(messages[Math.floor(Math.random()*messages.length)]);
 
     const btn = document.getElementById("noBtn");
+    const card = document.querySelector(".card");
 
-    // always move for first 6+ clicks
+    const rect = card.getBoundingClientRect();
+
     btn.style.position = "fixed";
-    btn.style.left = Math.random() * (window.innerWidth - 120) + "px";
-    btn.style.top = Math.random() * (window.innerHeight - 60) + "px";
 
-    // slight shrink effect over time
+    btn.style.left =
+        rect.left + Math.random() * (rect.width - 120) + "px";
+
+    btn.style.top =
+        rect.top + Math.random() * (rect.height - 80) + "px";
+
     btn.style.transform = `scale(${Math.max(0.8,1-noCount*0.03)})`;
 }
 
