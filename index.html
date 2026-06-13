@@ -37,6 +37,7 @@ body{
     border-radius:20px;
     margin-bottom:20px;
     box-shadow:0 8px 20px rgba(0,0,0,.08);
+    transition:0.2s;
 }
 
 h1{
@@ -59,7 +60,7 @@ button{
     cursor:pointer;
     font-size:20px;
     font-weight:bold;
-    transition:.25s;
+    transition:.2s;
 }
 
 #yesBtn{
@@ -75,29 +76,15 @@ button{
 button:hover{
     transform:scale(1.05);
 }
-
-.floating{
-    position:absolute;
-    font-size:24px;
-    animation:float 7s linear infinite;
-    pointer-events:none;
-}
-
-@keyframes float{
-    from{transform:translateY(100vh);opacity:0;}
-    20%{opacity:1;}
-    to{transform:translateY(-120px);opacity:0;}
-}
 </style>
 </head>
 <body>
 
 <div class="card">
 
-    <!-- IMAGE CHANGES HERE -->
     <img id="kittyImg"
         class="kitty"
-        src="IMG1.jpg"
+        src="https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie.jpg"
         alt="Kitty">
 
     <h1>Alice ❤️</h1>
@@ -118,55 +105,78 @@ button:hover{
 
 <script>
 
-// 🔁 YOUR 4 IMAGES (REPLACE THESE)
 const images = [
-    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie%20🐾💖.jpg",
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie.jpg",
     "https://raw.githubusercontent.com/GrystalFazer/gow/main/kittyrose.jpg",
-    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Coquette%20Kitty%20🎀.jpg",
-    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Heart%20Meme%20Funny.jpg"
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/CoquetteKitty.jpg",
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/HeartMeme.jpg"
 ];
 
 let noCount = 0;
-
 const kitty = document.getElementById("kittyImg");
 
-// floating hearts
-for(let i=0;i<30;i++){
-    const h=document.createElement("div");
-    h.className="floating";
-    h.innerHTML=["💗","💕","💖","🌸","❤️"][Math.floor(Math.random()*5)];
-    h.style.left=Math.random()*100+"vw";
-    h.style.animationDuration=(4+Math.random()*6)+"s";
-    document.body.appendChild(h);
+const messages = [
+    "hehe 😸",
+    "not so fast 💕",
+    "almost! 🌸",
+    "kitty says nope 🐾",
+    "try again 😳",
+    "so close 🥺",
+    "you can't catch me 🎀",
+    "nice try 😏"
+];
+
+function showToast(text){
+    const t = document.createElement("div");
+    t.innerText = text;
+
+    t.style.position = "fixed";
+    t.style.top = "40px";
+    t.style.left = "50%";
+    t.style.transform = "translateX(-50%)";
+    t.style.background = "white";
+    t.style.padding = "10px 18px";
+    t.style.borderRadius = "999px";
+    t.style.boxShadow = "0 5px 15px rgba(0,0,0,0.1)";
+    t.style.color = "#c97b84";
+    t.style.zIndex = "999";
+
+    document.body.appendChild(t);
+
+    setTimeout(()=>t.remove(),1200);
 }
 
 function noClick(){
 
     noCount++;
 
-    // cycle only first 3 images
-    let idx = noCount % 3;
+    // change kitty image (cycle first 3)
+    let idx = Math.min(noCount, 2);
     kitty.src = images[idx];
 
-    // small teasing shake
-    kitty.style.transform = "scale(0.95)";
-    setTimeout(()=>kitty.style.transform="scale(1)",200);
+    // show message
+    showToast(messages[Math.floor(Math.random()*messages.length)]);
 
+    // MOVE BUTTON
+    const btn = document.getElementById("noBtn");
+
+    btn.style.position = "fixed";
+    btn.style.left = Math.random() * (window.innerWidth - 120) + "px";
+    btn.style.top = Math.random() * (window.innerHeight - 60) + "px";
+
+    btn.style.transform = "scale(0.95)";
+    setTimeout(()=>btn.style.transform="scale(1)",150);
 }
 
 function yesAnswer(){
 
-    kitty.src = images[3]; // 4th image
+    kitty.src = images[3];
 
     document.body.innerHTML = `
-        <div style="
-            text-align:center;
-            color:#8b5e66;
-            padding:40px;
-        ">
+        <div style="text-align:center;color:#8b5e66;padding:40px;">
 
             <img src="${images[3]}"
-                 style="width:260px;border-radius:20px;box-shadow:0 8px 20px rgba(0,0,0,.1);">
+                style="width:260px;border-radius:20px;">
 
             <h1 style="margin-top:20px;">YAYYYY ❤️</h1>
 
