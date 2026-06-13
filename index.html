@@ -37,8 +37,7 @@ body{
     width:220px;
     border-radius:20px;
     margin-bottom:20px;
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
-    transition:0.25s;
+    transition:0.3s;
 }
 
 h1{
@@ -67,12 +66,14 @@ button{
 #yesBtn{
     background:#e5989b;
     color:white;
+    position:relative;
+    z-index:2;
 }
 
 #noBtn{
     background:white;
     color:#c97b84;
-    position:relative;
+    position:absolute;
     z-index:999;
 }
 
@@ -93,130 +94,129 @@ button:hover{
     color:#c97b84;
     z-index:999;
 }
+
+/* love bar */
+.bar{
+    width:100%;
+    height:14px;
+    background:#f5d6d9;
+    border-radius:999px;
+    margin-top:15px;
+    overflow:hidden;
+}
+
+.fill{
+    height:100%;
+    width:0%;
+    background:#e5989b;
+    transition:0.3s;
+}
 </style>
 </head>
+
 <body>
 
 <div class="card">
 
     <img id="kittyImg"
         class="kitty"
-        src="https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie.jpg"
-        alt="Kitty">
+        src="https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie.jpg">
 
-    <h1>Alice ❤️</h1>
+    <h1>Aliceeyyyyyyyy ❤️</h1>
 
     <div class="question">
         Will you go on a date with me? 🌹
     </div>
 
-    <button id="yesBtn" onclick="yesAnswer()">
-        Yes ❤️
-    </button>
+    <div class="bar">
+        <div class="fill" id="loveFill"></div>
+    </div>
 
-    <button id="noBtn" onclick="noClick()">
-        No 🥺
-    </button>
+    <button id="yesBtn" onclick="yesAnswer()">Yes ❤️</button>
+    <button id="noBtn" onmouseover="noClick()">No 🥺</button>
 
 </div>
 
 <script>
 
-/* IMAGES */
 const images = [
-    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie.jpg",
-    "https://raw.githubusercontent.com/GrystalFazer/gow/main/kittyrose.jpg",
-    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Coquette%20Kitty.jpg",
-    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie.jpg",
-    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Coquette%20Kitty.jpg",
-    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Heart%20Meme%20Funny.jpg"
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie.jpg", // 0 start
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/kittyrose.jpg",                     // 1
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Coquette%20Kitty.jpg",        // 2
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Tiny%20Confused%20Cutie.jpg",                       // 3 (add if you have)
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Coquette%20Kitty.jpg",                       // 4 (add if you have)
+    "https://raw.githubusercontent.com/GrystalFazer/gow/main/Heart%20Meme%20Funny.jpg"          // 5 final YES
 ];
 
-/* preload */
+
 images.forEach(src=>{
-    const img = new Image();
-    img.src = src;
+    const img=new Image();
+    img.src=src;
 });
 
-let noCount = 0;
-const kitty = document.getElementById("kittyImg");
+const kitty=document.getElementById("kittyImg");
+const noBtn=document.getElementById("noBtn");
+const loveFill=document.getElementById("loveFill");
 
-const messages = [
-    "hehe 😸",
-    "not so fast 💕",
-    "almost! 🌸",
-    "kitty says nope 🐾",
-    "try again 😳",
-    "so close 🥺",
-    "you can't catch me 🎀",
-    "still nope 😼",
-    "getting closer... 👀",
-    "okay you're persistent 🥺"
+let noCount=0;
+
+const messages=[
+"hehe 😸",
+"you missed me 💕",
+"almost caught me 🌸",
+"nope 🐾",
+"try harder 😳",
+"so close 🥺",
+"still running 🎀"
 ];
 
-/* toast */
 function showToast(text){
-    const t = document.createElement("div");
-    t.className = "toast";
-    t.innerText = text;
-
+    const t=document.createElement("div");
+    t.className="toast";
+    t.innerText=text;
     document.body.appendChild(t);
     setTimeout(()=>t.remove(),1200);
 }
 
-/* FIXED NO GAME */
+function moveButton(){
+    const padding=80;
+
+    const x=Math.random()*(window.innerWidth-padding);
+    const y=Math.random()*(window.innerHeight-padding);
+
+    noBtn.style.left=x+"px";
+    noBtn.style.top=y+"px";
+}
+
 function noClick(){
 
     noCount++;
 
-    // image cycle (0–5 max)
-    let idx = Math.min(noCount, 5);
-    kitty.src = images[idx];
+    kitty.src=images[Math.min(noCount,4)];
 
-    // message
     showToast(messages[Math.floor(Math.random()*messages.length)]);
 
-    const btn = document.getElementById("noBtn");
-    const card = document.querySelector(".card");
+    moveButton();
 
-    const rect = card.getBoundingClientRect();
+    loveFill.style.width=Math.min(noCount*10,100)+"%";
 
-    btn.style.position = "fixed";
-
-    btn.style.left =
-        rect.left + Math.random() * (rect.width - 120) + "px";
-
-    btn.style.top =
-        rect.top + Math.random() * (rect.height - 80) + "px";
-
-    btn.style.transform = `scale(${Math.max(0.8,1-noCount*0.03)})`;
+    noBtn.innerText = noCount>5 ? "PLEASE 🥺" : "No 🥺";
 }
 
-/* YES */
 function yesAnswer(){
 
-    kitty.src = images[5];
+    kitty.src=images[5];
 
-    document.body.innerHTML = `
-        <div style="text-align:center;color:#8b5e66;padding:40px;">
-
-            <img src="${images[5]}"
-                style="width:260px;border-radius:20px;">
-
-            <h1 style="margin-top:20px;">YAYYYY ❤️</h1>
-
-            <h2>Alice said YES 🌹</h2>
-
-            <p style="margin-top:20px;font-size:1.3rem;">
-                The kitty is very happy 🐾💕
-            </p>
-
-            <div style="font-size:50px;margin-top:25px;">
-                😸💖🐾💖😻
-            </div>
-
-        </div>
-    `;
+    document.body.innerHTML=`
+    <div style="text-align:center;color:#8b5e66;padding:40px;">
+        <img src="${images[5]}" style="width:260px;border-radius:20px;">
+        <h1 style="margin-top:20px;">YAYYYY ❤️</h1>
+        <h2>Alice said YES 🌹</h2>
+        <p style="margin-top:20px;font-size:1.3rem;">
+            The kitty is very happy 🐾💕
+        </p>
+        <div style="font-size:50px;margin-top:25px;">😸💖🐾💖😻</div>
+    </div>`;
 }
 
 </script>
